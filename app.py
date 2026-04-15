@@ -2,6 +2,10 @@ from flask import Flask, render_template, request
 import sqlite3
 import os
 
+# ✅ Ensure DB is created on cloud
+if not os.path.exists("products.db"):
+    import init_db
+
 app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
@@ -23,7 +27,7 @@ def index():
                 cursor = conn.cursor()
 
                 print("User Input:", search_query)
-                print("Executed Query:", query)   # 🔥 shows injection in terminal
+                print("Executed Query:", query)  # 🔥 shows injection in logs
 
                 cursor.execute(query)
                 results = cursor.fetchall()
@@ -43,5 +47,6 @@ def index():
     )
 
 if __name__ == "__main__":
+    # ✅ Required for cloud platforms like Render
     port = int(os.environ.get("PORT", 8000))
     app.run(host="0.0.0.0", port=port)
