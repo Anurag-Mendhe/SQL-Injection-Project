@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQL Injection Demonstration System</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>⚠ SQL Injection Demo</h1>
+
+      <h2>Search Product</h2>
+
+      <form method="POST">
+        <input
+          type="text"
+          name="search"
+          placeholder="Enter product name..."
+          value="{{ search_query }}"
+        />
+        <input type="submit" value="Search" />
+
+        <div class="attacks">
+          <h3>💣 Try SQL Injection Attacks:</h3>
+          <ul>
+            <li>' OR '1'='1</li>
+            <li>' OR 1=1 --</li>
+          </ul>
+        </div>
+      </form>
+
+      <!-- 🔴 Error Display -->
+      {% if error %}
+      <div class="no-results">⚠ Error: {{ error }}</div>
+      {% endif %}
+
+      <!-- ✅ Results -->
+      {% if results %}
+      <div class="results">
+        <h3>📦 Results:</h3>
+
+        {% for product in results %}
+        <div class="product">
+          <strong>{{ product[1] }}</strong><br />
+          {{ product[2] }}<br />
+          <span class="price">$ {{ product[3] }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- ❌ No Results -->
+      {% elif search_query %}
+      <div class="no-results">
+        ❌ No results for "<strong>{{ search_query }}</strong>"<br />
+        Product Currently Unavailable
+      </div>
+      {% endif %}
+
+      <div class="note">
+        ⚠ This system demonstrates how improper input handling can lead to SQL
+        Injection vulnerabilities.
+      </div>
+    </div>
+  </body>
+</html>
