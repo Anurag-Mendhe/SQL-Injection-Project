@@ -18,16 +18,27 @@
       <h2>Search Product</h2>
 
       <form method="POST">
+        <!-- 🔍 Search Input -->
         <input
           type="text"
           name="search"
           placeholder="Enter product name..."
           value="{{ search_query }}"
         />
+
+        <select name="mode" class="mode-select">
+          <option value="vulnerable">🔴 Vulnerable Mode</option>
+
+          <option value="secure">🟢 Secure Mode</option>
+        </select>
+
+        <!-- 🚀 Search Button -->
         <input type="submit" value="Search" />
 
+        <!-- 💣 Attack Examples -->
         <div class="attacks">
           <h3>💣 Try SQL Injection Attacks:</h3>
+
           <ul>
             <li>' OR '1'='1</li>
             <li>' OR 1=1 --</li>
@@ -35,33 +46,50 @@
         </div>
       </form>
 
-      <!-- 🔴 Error Display -->
+      <!-- 🔴 Current Mode -->
+      <div class="current-mode">
+        {% if mode == "vulnerable" %} 🔴 Current Mode: Vulnerable {% else %} 🟢
+        Current Mode: Secure {% endif %}
+      </div>
+
+      <!-- ⚠ Error Display -->
       {% if error %}
+
       <div class="no-results">⚠ Error: {{ error }}</div>
+
       {% endif %}
 
       <!-- ✅ Results -->
       {% if results %}
+
       <div class="results">
         <h3>📦 Results:</h3>
 
         {% for product in results %}
+
         <div class="product">
           <strong>{{ product[1] }}</strong><br />
+
           {{ product[2] }}<br />
-          <span class="price">$ {{ product[3] }}</span>
+
+          <span class="price"> $ {{ product[3] }} </span>
         </div>
+
         {% endfor %}
       </div>
 
       <!-- ❌ No Results -->
       {% elif search_query %}
+
       <div class="no-results">
         ❌ No results for "<strong>{{ search_query }}</strong>"<br />
+
         Product Currently Unavailable
       </div>
+
       {% endif %}
 
+      <!-- 📝 Note -->
       <div class="note">
         ⚠ This system demonstrates how improper input handling can lead to SQL
         Injection vulnerabilities.
